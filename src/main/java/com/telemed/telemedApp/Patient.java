@@ -13,6 +13,8 @@ public class Patient {
     private String email;
     private String korisnickoIme;
     private String lozinka;
+    private int id;
+    private static int idCounter;
 
     public Patient(int mb, String ime, String prezime, String datumRodjenja, String spol, String adresa, int pb, String grad, int kontakt, String email, String korisnickoIme, String lozinka) {
         this.mb = mb;
@@ -27,6 +29,7 @@ public class Patient {
         this.email = email;
         this.korisnickoIme = korisnickoIme;
         this.lozinka = lozinka;
+        id = idCounter++;
     }
 
     public int getMb() {
@@ -123,5 +126,13 @@ public class Patient {
 
     public void setLozinka(String lozinka) {
         this.lozinka = lozinka;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

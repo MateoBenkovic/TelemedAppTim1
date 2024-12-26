@@ -11,18 +11,17 @@ import java.util.List;
 
 @Controller
 public class PatientController {
-    private List<Patient> patients = new ArrayList<>();
+    PatientRepository patient;
 
-    public PatientController() {
-        patients.add(new Patient(1, "Ivo", "Ivić", "1990-01-01", "Muško", "Adresa 1", 10000, "Zagreb", 123456789, "ivo.ivic@example.com", "ivoivic", "lozinka123"));
-        patients.add(new Patient(2, "Ana", "Anić", "1995-05-05", "Žensko", "Adresa 2", 21000, "Split", 987654321, "ana.anic@example.com", "anaanic", "lozinka321"));
+    public PatientController(PatientRepository patientRepository) {
+        this.patient = patientRepository;
     }
 
 
 
     @GetMapping("/listaPacijenata")
     public String getAllPatients(Model model) {
-        model.addAttribute("patients", patients);
+        model.addAttribute("patients", patient.getPatientList());
         return "listaPacijenata.html";
     }
 
@@ -46,7 +45,59 @@ public class PatientController {
             @RequestParam("email") String email,
             @RequestParam("korisnickoIme") String korisnickoIme,
             @RequestParam("lozinka") String lozinka) {
-        patients.add(new Patient(mb, ime, prezime, datumRodjenja, spol, adresa, pb, grad, kontakt, email, korisnickoIme, lozinka));
+        patient.getPatientList().add(new Patient(mb, ime, prezime, datumRodjenja, spol, adresa, pb, grad, kontakt, email, korisnickoIme, lozinka));
         return "redirect:/listaPacijenata";
     }
+
+    @GetMapping("/deletePatient")
+    public String deletePatient(@RequestParam("id") int id) {
+        for (Patient p : patient.getPatientList()) {
+            if(p.getId() == id) {
+                patient.getPatientList().remove(p);
+                break;
+            }
+        }
+        return "redirect:/listaPacijenata";
+    }
+
+    @GetMapping("/showPatient")
+    public String showPatient(@RequestParam ("id") int id, Model model) {
+        Patient patientToEdit = patient.findById(id);
+        model.addAttribute("patient", patientToEdit);
+
+        return "edit_patient.html";
+    }
+
+    @GetMapping("/editPatient")
+    public String editPatient(@RequestParam("id") int id,
+                              @RequestParam("mb") int mb,
+                              @RequestParam("ime") String ime,
+                              @RequestParam("prezime") String prezime,
+                              @RequestParam("datumRodjenja") String datumRodjenja,
+                              @RequestParam("spol") String spol,
+                              @RequestParam("adresa") String adresa,
+                              @RequestParam("pb") int pb,
+                              @RequestParam("grad") String grad,
+                              @RequestParam("kontakt") int kontakt,
+                              @RequestParam("email") String email,
+                              @RequestParam("korisnickoIme") String korisnickoIme,
+                              @RequestParam("lozinka") String lozinka) {
+
+        Patient patientToEdit = patient.findById(id);
+        patientToEdit.setMb(mb);
+        patientToEdit.setIme(ime);
+        patientToEdit.setPrezime(prezime);
+        patientToEdit.setDatumRodjenja(datumRodjenja);
+        patientToEdit.setSpol(spol);
+        patientToEdit.setAdresa(adresa);
+        patientToEdit.setPb(pb);
+        patientToEdit.setGrad(grad);
+        patientToEdit.setKontakt(kontakt);
+        patientToEdit.setEmail(email);
+        patientToEdit.setKorisnickoIme(korisnickoIme);
+        patientToEdit.setLozinka(lozinka);
+
+        return "redirect:/listaPacijenata";
+    }
+
 }

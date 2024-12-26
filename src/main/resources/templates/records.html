@@ -22,7 +22,7 @@
       <a href="patients.html">Lista pacijenata</a>
       <div class="mt-auto">
         <h4 class="pb-3 link-primary">Ivo Ivić</h4>
-        <a href="login.html" class="mt-auto">Odjava</a>
+        <a onclick="location.href = '/login'" class="mt-auto" style="cursor: pointer;">Odjava</a>
       </div>
 
     </nav>
@@ -80,8 +80,8 @@
           <td th:text="${item.diastolic}"></td>
           <td th:text="${item.pulse}"></td>
           <td th:text="${item.comment}"></td>
-          <td><button class="btn btn-light js-delete-button"><img src="/images/delete.png" width="24" height="24"></button> </td>
-          <td><button class="btn btn-light js-edit-button"><img src="/images/edit.png" width="24" height="24"></button> </td>
+          <td><a th:href="@{'/deleteStatus?id=' + ${item.id}}"> <img src="/images/delete.png" width="25" height="25"></a> </td>
+          <td><a th:href="@{'/showStatus?id=' + ${item.id}}"><img src="/images/edit.png" width="24" height="24"></a> </td>
         </tr>
         </tbody>
       </table>

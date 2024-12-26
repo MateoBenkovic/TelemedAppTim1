@@ -30,8 +30,9 @@
         <h2 class="mt-4">Unos novog korisnika</h2> <br>
         <div class="container-fluid">
             <div class="row">
-
+                <div class="col-6">
                 <form action="/addNewPatient">
+
                     <div>
                         <label for="mb">Matični broj</label><br>
                         <input class="form-control mb-3 js-mb" type="number" id="mb" name="mb"
@@ -80,6 +81,7 @@
                         <input class="form-control mb-3 js-kontakt" type="number" id="kontakt"
                                placeholder="0991234567 ili 044742584" name="kontakt">
                     </div>
+
                     <div class="col-6">
                     <div>
                         <label for="email">Email</label><br>
@@ -97,9 +99,9 @@
                     </div>
                     <button class="btn btn-primary" name="toPatients" type="submit">Dodaj</button>
                     <button class="btn btn-primary btn-danger" name="reset" type="reset">Obriši</button>
-                    </div>
+
                 </form>
-                </div>
+
 
 
             </div>

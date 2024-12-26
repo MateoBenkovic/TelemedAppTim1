@@ -4,43 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patients</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>List of Patients</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>MB</th>
-        <th>Ime</th>
-        <th>Prezime</th>
-        <th>Datum Rođenja</th>
-        <th>Spol</th>
-        <th>Adresa</th>
-        <th>PB</th>
-        <th>Grad</th>
-        <th>Kontakt</th>
-        <th>Email</th>
-        <th>Korisničko Ime</th>
-        <th>Lozinka</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="patient : ${patients}">
-        <td th:text="${patient.mb}"></td>
-        <td th:text="${patient.ime}"></td>
-        <td th:text="${patient.prezime}"></td>
-        <td th:text="${patient.datumRodjenja}"></td>
-        <td th:text="${patient.spol}"></td>
-        <td th:text="${patient.adresa}"></td>
-        <td th:text="${patient.pb}"></td>
-        <td th:text="${patient.grad}"></td>
-        <td th:text="${patient.kontakt}"></td>
-        <td th:text="${patient.email}"></td>
-        <td th:text="${patient.korisnickoIme}"></td>
-        <td th:text="${patient.lozinka}"></td>
-    </tr>
-    </tbody>
-</table>
-<a href="/addPatientForm">Dodaj Pacijenta</a>
+<body class="bg-light text-dark">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">List of Patients</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="table-secondary">
+        <tr>
+            <th>MB</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Datum Rođenja</th>
+            <th>Spol</th>
+            <th>Adresa</th>
+            <th>PB</th>
+            <th>Grad</th>
+            <th>Kontakt</th>
+            <th>Email</th>
+            <th>Korisničko Ime</th>
+            <th>Lozinka</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patients}">
+            <td th:text="${patient.mb}"></td>
+            <td th:text="${patient.ime}"></td>
+            <td th:text="${patient.prezime}"></td>
+            <td th:text="${patient.datumRodjenja}"></td>
+            <td th:text="${patient.spol}"></td>
+            <td th:text="${patient.adresa}"></td>
+            <td th:text="${patient.pb}"></td>
+            <td th:text="${patient.grad}"></td>
+            <td th:text="${patient.kontakt}"></td>
+            <td th:text="${patient.email}"></td>
+            <td th:text="${patient.korisnickoIme}"></td>
+            <td th:text="${patient.lozinka}"></td>
+            <td>
+                <a th:href="@{'/deletePatient?id=' + ${patient.id}}" class="btn btn-sm">
+                    <img src="/images/delete.png" width="20" height="20" alt="Delete">
+                </a>
+                <a th:href="@{'/showPatient?id=' + ${patient.id}}" class="btn btn-sm">
+                    <img src="/images/edit.png" width="20" height="20" alt="Edit">
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center mt-4">
+        <button onclick="location.href = '/new_patient.html'" class="btn btn-primary">Dodaj Pacijenta</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

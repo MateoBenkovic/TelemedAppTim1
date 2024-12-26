@@ -11,13 +11,11 @@ import java.util.List;
 
 @Controller
 public class PatientStatusController {
-    List<PatientStatus> patientStatus= new ArrayList<>();
 
-    public PatientStatusController() {
-        patientStatus.add(new PatientStatus(new Date(), 120, 80, 80, "Dobro se osjecam"));
-        patientStatus.add(new PatientStatus(new Date(), 150, 100, 94, "Lose se osjecam"));
-        patientStatus.add(new PatientStatus(new Date(), 150, 100, 94, "Lose se osjecam"));
-        patientStatus.add(new PatientStatus(new Date(), 150, 100, 94, "Lose se osjecam"));
+    PatientStatusRepository patientStatus;
+
+    public PatientStatusController(PatientStatusRepository patientStatusRepository) {
+        this.patientStatus = patientStatusRepository;
     }
 
     @GetMapping("/login")
@@ -30,30 +28,79 @@ public class PatientStatusController {
     }
 
     @GetMapping("/patientStatus")
-    public String showStatus(Model model) {
-        model.addAttribute("patientStatus", patientStatus);
+    public String patientStatus(Model model) {
+        model.addAttribute("patientStatus", patientStatus.getPatientStatus());
         return "records.html";
     }
 
+    @GetMapping("/patients")
+    public String showPatients(Model model) {
+        return "records.html";
+    }
+
+
     @GetMapping("/addNewStatus")
-    public String addNewStatus(@RequestParam("systolic") int systolic, @RequestParam("diastolic") int diastolic, @RequestParam("pulse") int pulse, @RequestParam("comment") String comment){
+    public String addNewStatus(@RequestParam("systolic") int systolic,
+                               @RequestParam("diastolic") int diastolic,
+                               @RequestParam("pulse") int pulse,
+                               @RequestParam("comment") String comment){
         PatientStatus newPatientStatus = new PatientStatus(new Date(), systolic, diastolic, pulse, comment);
-        patientStatus.add(newPatientStatus);
+        patientStatus.getPatientStatus().add(newPatientStatus);
+
+        return "redirect:/patientStatus";
+    }
+
+    @GetMapping("/deleteStatus")
+    public String deleteStatus(@RequestParam("id") int id) {
+        for (PatientStatus s : patientStatus.getPatientStatus()) {
+            if(s.getId() == id) {
+                patientStatus.getPatientStatus().remove(s);
+                break;
+            }
+        }
+        return "redirect:/patientStatus";
+    }
+
+    @GetMapping("/showStatus")
+    public String showStatus(@RequestParam ("id") int id, Model model) {
+        PatientStatus patientStatusToEdit = patientStatus.findById(id);
+        model.addAttribute("patientStatus", patientStatusToEdit);
+
+        return "edit_patientStatus.html";
+    }
+
+    @GetMapping("/editPatientStatus")
+    public String editPatientStatus(@RequestParam ("id") int id,
+                                    @RequestParam("systolic") int systolic,
+                                    @RequestParam("diastolic") int diastolic,
+                                    @RequestParam("pulse") int pulse,
+                                    @RequestParam("comment") String comment) {
+
+        PatientStatus patientStatusToEdit = patientStatus.findById(id);
+        patientStatusToEdit.setSystolic(systolic);
+        patientStatusToEdit.setDiastolic(diastolic);
+        patientStatusToEdit.setPulse(pulse);
+        patientStatusToEdit.setComment(comment);
 
         return "redirect:/patientStatus";
     }
 
 
-    /*
-    @GetMapping("/deleteTodo")
-    public String deleteTodo(@RequestParam("title") String title) {
-        for (Todo t:todoList) {
-            if(t.getTitle().equals(title)) {
-                todoList.remove(t);
-                break;
-            }
+
+    @GetMapping("/loginProcess")
+    public String loginProcess( @RequestParam ("username") String username,
+                                @RequestParam ("password") String password,
+                                Model model) {
+
+        if (username.equals("Doktor") && password.equals("lozinka")) {
+            model.addAttribute("username", username);
+            return "redirect:/patients";
+        } else if (username.equals("Pacijent") && password.equals("lozinka")) {
+            return "redirect:/patientStatus";
+        } else {
+            model.addAttribute("loginMessage", "Wrong username or password");
+            return "login.html";
         }
-        return "redirect:/records";
     }
-*/
+
 }

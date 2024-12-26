@@ -8,6 +8,8 @@ public class PatientStatus {
     private int diastolic;
     private int pulse;
     private Date date;
+    private int id;
+    private static int idCounter;
 
     public PatientStatus(Date date, int systolic, int diastolic, int pulse, String comment) {
         this.date = date;
@@ -15,6 +17,7 @@ public class PatientStatus {
         this.diastolic = diastolic;
         this.pulse = pulse;
         this.comment = comment;
+        id = idCounter++;
     }
 
     public Date getDate() {
@@ -55,5 +58,13 @@ public class PatientStatus {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
